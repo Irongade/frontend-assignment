@@ -39,7 +39,6 @@ export const ModalWrapper = styled.div`
     margin: 0 auto;
     margin-top: 20px;
     margin-bottom: 20px;
-    border-radius: 4px;
     padding: 10px 20px;
     background-color: #fff;
     align-self: center;
@@ -59,33 +58,31 @@ export const ModalWrapper = styled.div`
 
     ${breakpoints("padding", "", [
         { 700: '10px 10px' },
-        { 400: '10px 5px' },
     ])};
 
+    ${breakpoints("width", "", [
+        { 1180: '50vw' },
+        { 1000: '55vw' },
+        { 800: '70vw' },
+        { 500: '80vw' },
+    ])};
 `
 
 export const ModalText = styled(Text)`
     font-size: .875rem;
     ${breakpoints("font-size", "", [
         { 1145: '.8rem' },
-        { 1050: '.7rem' },
-        { 950: '.65rem' },
-        { 800: '.63rem' },
         { 750: '.6rem' },
         { 500: '.5rem' },
     ])};
     ${breakpoints("line-height", "", [
-        { 1000: '.9rem' },
-        { 900: '.8rem' },
-        { 800: '.78rem' },
-        { 700: '.75rem' },
         { 600: '.73rem' },
         { 500: '.7rem' },
     ])};
 `
 
 export const ModalTitle = styled.h2`
-    width: 100%;
+    width: 80%;
     font-weight: 700;
     font-size: 1.125rem;
     font-family: Inter, sans-serif;
@@ -96,7 +93,6 @@ export const ModalPoster = styled.img`
     width: 100%;
     height: auto;
     max-width: 300px;
-
 ` 
 export const Span = styled.span`
     font-weight: 600;

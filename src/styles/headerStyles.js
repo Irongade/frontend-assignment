@@ -12,12 +12,14 @@ export const InputDiv = styled.div`
     padding-inline-start: 2rem;
     padding-inline-end: 1rem;
     background: #fff;
+    padding-top: 3px;
+    padding-bottom: 3px;
 `
 
 export const Input = styled.input`
     width: 100%;
     min-width: 0px;
-    outline: transparent solid 2px;
+    outline: transparent;
     outline-offset: 2px;
     position: relative;
     appearance: none;
@@ -40,7 +42,7 @@ export const InputSpan = styled.div`
     height: 1.5rem;
     display: inherit;
     position: absolute;
-    top: 15%;
+    top: 20%;
     left: 0;
     z-index: 2;
     padding: 0.5rem;

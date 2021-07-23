@@ -1,11 +1,17 @@
-import React from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 
 // styles
-import { Text, Box } from '../styles/globalStyles';
-import { MovieItemContainer, MovieRatingDiv, MovieItemFooter, MoviePoster, MoviePosterContainer } from '../styles/movieItemStyles';
+import { Text, Box, Flex, LoadingSkeleton } from '../styles/globalStyles';
+import { MovieItemContainer, MovieRatingDiv, MovieItemFooter, MoviePoster, MoviePosterContainer, MovieItemFooterText } from '../styles/movieItemStyles';
 
 //context
-import {useGlobalStateContext, useGlobalDispatchContext} from "../context/globalContext"
+import {useGlobalStateContext, useGlobalDispatchContext} from "../context/globalContext";
+
+//service
+import MovieService from "../service/movieService";
+
+// hooks
+import useIntersection from '../hooks/useIntersection';
 
 const MovieItem = ({movie}) => {
     const dispatch = useGlobalDispatchContext();
@@ -17,8 +23,33 @@ const MovieItem = ({movie}) => {
         });
     }
 
+    const [image, setImage] = useState('');
+    const [hasImageLoaded, setHasImageLoaded] = useState(false)
+    const imgRef = useRef();
+    const inViewPort = useIntersection(imgRef, '-200px')
+
+    useEffect(() => {
+        async function getImage() {
+            try {
+                if(inViewPort) {
+                    setHasImageLoaded(false)
+                    const blobImg = await MovieService.getImage(movie.poster_path)
+                    let img = URL.createObjectURL(blobImg);
+                    setImage(img)
+        
+                    setHasImageLoaded(true)
+                }
+            } catch(err) {
+                console.log(err)
+            }
+        }
+        getImage();
+       
+    }, [movie.poster_path, inViewPort])
+
     return (
-            <MovieItemContainer onClick={openModal}>
+        <Flex justifyCenter>
+            <MovieItemContainer ref={imgRef} onClick={openModal}>
                 <MovieRatingDiv>
                     <Text fontSize=".75rem" fontWeight="600">
                         {movie.vote_average}
@@ -26,17 +57,23 @@ const MovieItem = ({movie}) => {
                 </MovieRatingDiv>
     
                 <MoviePosterContainer>
-                    <MoviePoster loading="lazy" alt={`movie poster ${movie.id}`} src={`${process.env.REACT_APP_API_BASE_IMAGE_URL + movie.poster_path}`} />          
+                    {
+                        hasImageLoaded ? 
+                            <MoviePoster loading="lazy" alt={`movie poster ${movie.id}`} src={image} />          
+                            : <LoadingSkeleton h="302px" /> 
+                    }
                 </MoviePosterContainer>
                 
                 <MovieItemFooter>
-                    <Box>
-                        <Text lineHeight="1.625rem" textSize="1rem" textAlign="center">
+                    <Box lineClamp>
+                        <MovieItemFooterText>
                             {movie.title}
-                        </Text>
+                        </MovieItemFooterText>
                     </Box>
                 </MovieItemFooter> 
             </MovieItemContainer>
+
+        </Flex>
 
     )
 }

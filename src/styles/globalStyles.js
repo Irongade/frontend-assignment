@@ -29,6 +29,9 @@ export const Container = styled.div`
            margin-bottom: 2rem;
         `
     }
+    ${breakpoints("padding", "", [
+        { 500: '0 20px' },
+    ])};
 `
 
 export const Text = styled.p`
@@ -65,6 +68,15 @@ export const Box = styled.div`
         ])};
         `
     }
+
+    ${
+        props => props.lineClamp && css`
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        `
+    }
 `
 
 export const Flex = styled.div`
@@ -92,7 +104,11 @@ export const Flex = styled.div`
             justify-content: space-between;
         `
     }
-
+    ${
+        props => props.justifyCenter && css`
+            justify-content: center;
+        `
+    }
 `
 
 const loadingAnimation = keyframes`
